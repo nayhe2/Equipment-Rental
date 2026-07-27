@@ -2,6 +2,7 @@ package com.github.nayhe.equipmentrental.service;
 
 import com.github.nayhe.equipmentrental.dto.CustomerCreateDto;
 import com.github.nayhe.equipmentrental.entity.Customer;
+import com.github.nayhe.equipmentrental.exception.ResourceNotFoundException;
 import com.github.nayhe.equipmentrental.mapper.CustomerMapper;
 import com.github.nayhe.equipmentrental.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ public class CustomerService {
     public List<Customer> getAllCustomers()
     {
         return customerRepository.findAll();
+    }
+
+    public Customer getCustomerById(Long id){
+        return customerRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Customer not found with ID: "+ id));
     }
 
     public Customer addCustomer(CustomerCreateDto dto)

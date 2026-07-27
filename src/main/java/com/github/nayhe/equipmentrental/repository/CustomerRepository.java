@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+//Pierwszy parametr mówi Springowi, jaką encją zarządzamy (Customer),
+//a drugi mówi, jakiego typu jest jej Klucz Główny, czyli ID (Long).
+
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 }

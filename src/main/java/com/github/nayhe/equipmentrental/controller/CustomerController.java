@@ -3,6 +3,7 @@ package com.github.nayhe.equipmentrental.controller;
 import com.github.nayhe.equipmentrental.dto.CustomerCreateDto;
 import com.github.nayhe.equipmentrental.entity.Customer;
 import com.github.nayhe.equipmentrental.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer addCustomer(@RequestBody CustomerCreateDto dto)
+    public Customer addCustomer(@Valid @RequestBody CustomerCreateDto dto)
     {
         return customerService.addCustomer(dto);
     }

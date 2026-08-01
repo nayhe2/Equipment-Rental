@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="rental")
@@ -29,8 +31,11 @@ public class Rental {
     private Equipment equipment;
 
     @Column
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column
-    private LocalDate returnDate;
+    private LocalDateTime returnDate;
+
+    @Column
+    private BigDecimal totalCost;
 }

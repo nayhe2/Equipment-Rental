@@ -4,11 +4,9 @@ import com.github.nayhe.equipmentrental.dto.RentalCreateDto;
 import com.github.nayhe.equipmentrental.entity.Rental;
 import com.github.nayhe.equipmentrental.service.RentalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -25,5 +23,20 @@ public class RentalController {
     @PostMapping
     public Rental addRental(RentalCreateDto dto){
         return rentalService.createRental(dto);
+    }
+
+    @PostMapping("/{id}/return")
+    public Rental returnEquipmemt(@PathVariable Long rentalId){
+        return rentalService.returnEquipment(rentalId);
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public List<Rental> getAllRentalsByCustomer(@PathVariable Long customerId){
+        return rentalService.getRentalsByCustomer(customerId);
+    }
+
+    @GetMapping("/earnings")
+    public BigDecimal getTotalEarnings(){
+        return rentalService.getTotalEearnings();
     }
 }

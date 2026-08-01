@@ -10,9 +10,13 @@ import com.github.nayhe.equipmentrental.repository.CustomerRepository;
 import com.github.nayhe.equipmentrental.repository.EquipmentRepository;
 import com.github.nayhe.equipmentrental.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -42,9 +46,51 @@ public class RentalService {
         Rental rental = new Rental();
         rental.setCustomer(customer);
         rental.setEquipment(equipment);
-        rental.setStartDate(LocalDate.now());
+        rental.setStartDate(LocalDateTime.now());
 
         return rentalRepository.save(rental);
+    }
+
+    public Rental returnEquipment(Long rentalId){
+        Rental rental = rentalRepository.findById(rentalId)
+                .orElseThrow(()->new ResourceNotFoundException("Rental not found with ID: "+rentalId));
+
+        if(rental.getReturnDate()!=null)
+            throw new RuntimeException("This equipment has already been returned");
+
+        rental.setReturnDate(LocalDateTime.now());
+
+        long hoursRented = ChronoUnit.HOURS.between(rental.getStartDate(),rental.getReturnDate());
+
+        if(hoursRented == 0)
+            hoursRented = 1;
+
+        Equipment equipment = rental.getEquipment();
+
+        BigDecimal cost = equipment.getPricePerHour().multiply(BigDecimal.valueOf(hoursRented));
+
+        rental.setTotalCost(cost);
+        equipment.setIsAvailable(true);
+        equipmentRepository.save(equipment);
+
+        return rentalRepository.save(rental);
+    }
+
+    public List<Rental> getRentalsByCustomer(Long customerId){
+        if(!customerRepository.existsById(customerId))
+            throw new ResourceNotFoundException("Customer not ofund with ID: "+customerId);
+
+        return rentalRepository.findAllByCustomer_Id(customerId);
+    }
+
+    public BigDecimal getTotalEearnings(){
+        BigDecimal earnings = rentalRepository.calculateTotalEarnings();
+
+        if(earnings == null){
+            return BigDecimal.ZERO;
+        }
+
+        return earnings;
     }
 
 }

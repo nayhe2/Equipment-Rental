@@ -4,6 +4,8 @@ import com.github.nayhe.equipmentrental.dto.EquipmentCreateDto;
 import com.github.nayhe.equipmentrental.entity.Equipment;
 import com.github.nayhe.equipmentrental.mapper.EquipmentMapper;
 import com.github.nayhe.equipmentrental.repository.EquipmentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.RasterFormatException;
@@ -19,8 +21,8 @@ public class EquipmentService {
         this.equipmentMapper = equipmentMapper;
     }
 
-    public List<Equipment> getAllEquipment() {
-        return equipmentRepository.findAll();
+    public Page<Equipment> getAllEquipment(Pageable pageable) {
+        return equipmentRepository.findAll(pageable);
     }
 
     public Equipment getEquipmentById(Long id){
@@ -32,6 +34,10 @@ public class EquipmentService {
         Equipment equipment = equipmentMapper.toEntity(dto);
         equipment.setIsAvailable(true);
         return equipmentRepository.save(equipment);
+    }
+
+    public List<Equipment> getAvailableEquipment(){
+        return equipmentRepository.findAllByIsAvailableTrue();
     }
 }
 

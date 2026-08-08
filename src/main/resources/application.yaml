@@ -1,3 +1,5 @@
 spring:
   application:
     name: equipment-rental
+jwt:
+  secret: ToJestBardzoTajnyKluczDoJWTKtoryMaMinimum32Znaki!

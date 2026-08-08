@@ -5,16 +5,13 @@ import com.github.nayhe.equipmentrental.entity.Customer;
 import com.github.nayhe.equipmentrental.entity.Equipment;
 import com.github.nayhe.equipmentrental.entity.Rental;
 import com.github.nayhe.equipmentrental.exception.ResourceNotFoundException;
-import com.github.nayhe.equipmentrental.mapper.RentalMapper;
 import com.github.nayhe.equipmentrental.repository.CustomerRepository;
 import com.github.nayhe.equipmentrental.repository.EquipmentRepository;
 import com.github.nayhe.equipmentrental.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -83,7 +80,7 @@ public class RentalService {
         return rentalRepository.findAllByCustomer_Id(customerId);
     }
 
-    public BigDecimal getTotalEearnings(){
+    public BigDecimal getTotalEarnings(){
         BigDecimal earnings = rentalRepository.calculateTotalEarnings();
 
         if(earnings == null){

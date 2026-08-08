@@ -4,6 +4,7 @@ import com.github.nayhe.equipmentrental.dto.RentalCreateDto;
 import com.github.nayhe.equipmentrental.entity.Rental;
 import com.github.nayhe.equipmentrental.service.RentalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -36,7 +37,8 @@ public class RentalController {
     }
 
     @GetMapping("/earnings")
-    public BigDecimal getTotalEarnings(){
-        return rentalService.getTotalEearnings();
+    @PreAuthorize("hasRole('ADMIN')")
+    public BigDecimal getTotalEarnings() {
+        return rentalService.getTotalEarnings();
     }
 }

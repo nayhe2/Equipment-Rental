@@ -1,5 +1,31 @@
 spring:
   application:
     name: equipment-rental
+
+  datasource:
+    # URL musi pasować do POSTGRES_DB z docker-compose
+    url: jdbc:postgresql://localhost:5432/equipment_rental
+    # USER musi pasować do POSTGRES_USER
+    username: myuser
+    # PASSWORD musi pasować do POSTGRES_PASSWORD
+    password: secretpassword
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    check-location: false # <--- TO JEST KLUCZ! Wyłącza "ciche" pomijanie Flywaya
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
 jwt:
   secret: ToJestBardzoTajnyKluczDoJWTKtoryMaMinimum32Znaki!
+
+logging:
+  level:
+    org.flywaydb: DEBUG

@@ -12,4 +12,6 @@ public interface RentalRepository extends JpaRepository<Rental,Long> {
 
     @Query("SELECT SUM(r.totalCost) FROM  Rental r WHERE r.totalCost IS NOT NULL")
     BigDecimal calculateTotalEarnings();
+
+    List<Rental> findAllByReturnDateIsNull();
 }

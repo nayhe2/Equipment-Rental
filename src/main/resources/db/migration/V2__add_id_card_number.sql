@@ -1,0 +1,1 @@
+ALTER TABLE customers ADD COLUMN id_card_number VARCHAR(255);

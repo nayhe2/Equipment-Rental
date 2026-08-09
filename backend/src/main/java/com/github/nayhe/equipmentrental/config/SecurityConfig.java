@@ -49,9 +49,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // wyłączanie sesji (każde zapytanie jest niezależne)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // dodanie filtra zanim uruchomi się domyślny filtr Springa
 
-
-
-
         return http.build();
     }
 

@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: equipment_db_container
+    environment:
+      POSTGRES_DB: equipment_rental
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: secretpassword
+    ports:
+      - "5432:5432"

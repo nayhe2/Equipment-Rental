@@ -22,16 +22,19 @@ public class RentalController {
     }
 
     @PostMapping
-    public Rental addRental(RentalCreateDto dto){
+    @PreAuthorize("hasRole('ADMIN')")
+    public Rental addRental(@RequestBody RentalCreateDto dto){
         return rentalService.createRental(dto);
     }
 
-    @PostMapping("/{id}/return")
+    @PostMapping("/{rentalId}/return")
+    @PreAuthorize("hasRole('ADMIN')")
     public Rental returnEquipmemt(@PathVariable Long rentalId){
         return rentalService.returnEquipment(rentalId);
     }
 
     @GetMapping("/customer/{customerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Rental> getAllRentalsByCustomer(@PathVariable Long customerId){
         return rentalService.getRentalsByCustomer(customerId);
     }

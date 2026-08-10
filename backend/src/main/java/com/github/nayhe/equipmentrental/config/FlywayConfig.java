@@ -23,7 +23,7 @@ public class FlywayConfig {
                 .baselineOnMigrate(true)
                 .load();
 
-        // Ta linijka to absolutny rozkaz - wykonaj pliki SQL z folderu!
+        // migracja ( wykonuje pliki z db/migration)
         flyway.migrate();
 
         log.info("Flyway zakończył pracę!");

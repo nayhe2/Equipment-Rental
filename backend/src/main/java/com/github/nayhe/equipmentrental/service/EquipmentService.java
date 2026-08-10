@@ -4,6 +4,7 @@ import com.github.nayhe.equipmentrental.dto.EquipmentCreateDto;
 import com.github.nayhe.equipmentrental.entity.Equipment;
 import com.github.nayhe.equipmentrental.mapper.EquipmentMapper;
 import com.github.nayhe.equipmentrental.repository.EquipmentRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,22 @@ public class EquipmentService {
         return equipmentRepository.save(equipment);
     }
 
+    public void deleteEquipment(Long id){
+        Equipment equipment = getEquipmentById(id);
+
+        if (!equipment.getIsAvailable()) {
+            throw new IllegalStateException("Nie można usunąć sprzętu, który jest aktualnie wypożyczony");
+        }
+
+        try {
+            equipmentRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            // sprzęt ma powiązaną historię wypożyczeń (klucz obcy w tabeli rental)
+            throw new IllegalStateException("Nie można usunąć sprzętu, który ma historię wypożyczeń");
+        }
+    }
+
     public List<Equipment> getAvailableEquipment(){
         return equipmentRepository.findAllByIsAvailableTrue();
     }
 }
-
-

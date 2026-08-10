@@ -16,8 +16,6 @@ public class RentalScheduler {
 
     private final RentalRepository rentalRepository;
 
-    // Do testów odpalamy co 10 000 milisekund (10 sekund).
-    // W prawdziwym życiu używamy CRONa, co pokażę poniżej.
     @Scheduled(fixedRate = 10000)
     public void checkUnreturnedEquipment() {
         log.info("Rozpoczynam sprawdzanie przeterminowanych wypożyczeń...");

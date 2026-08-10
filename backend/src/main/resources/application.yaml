@@ -13,13 +13,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
-    check-location: false # <--- TO JEST KLUCZ! Wyłącza "ciche" pomijanie Flywaya
+    check-location: false # Wyłącza "ciche" pomijanie Flywaya
     baseline-on-migrate: true
     locations: classpath:db/migration
 

@@ -1,25 +1,40 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { getStoredAuthToken, logout as apiLogout } from "./api/auth";
+import {
+  getStoredAuthToken,
+  getStoredUserRole,
+  logout as apiLogout,
+} from "./api/auth";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
-import Home from "./components/Home";
+import Layout from "./components/Layout";
+import Dashboard from "./components/Dashboard";
+import EquipmentPage from "./components/EquipmentPage";
+import CustomersPage from "./components/CustomersPage";
+import RentalsPage from "./components/RentalsPage";
 
 const AppRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Sprawdzanie tokena JWT przy starcie aplikacji
+  const refreshAuthState = async () => {
+    const token = await getStoredAuthToken();
+    setIsAuthenticated(!!token);
+    setRole(token ? await getStoredUserRole() : null);
+  };
+
+  // sprawdzanie tokena JWT przy starcie aplikacji
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = await getStoredAuthToken();
-        setIsAuthenticated(!!token);
+        await refreshAuthState();
       } catch (error) {
         console.error("Błąd autoryzacji:", error);
         setIsAuthenticated(false);
+        setRole(null);
       } finally {
         setIsLoading(false);
       }
@@ -29,7 +44,7 @@ const AppRoutes = () => {
   }, []);
 
   const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
+    refreshAuthState();
   };
 
   const handleLogout = async () => {
@@ -39,8 +54,11 @@ const AppRoutes = () => {
       console.error("Logout error:", error);
     } finally {
       setIsAuthenticated(false);
+      setRole(null);
     }
   };
+
+  const isAdmin = role === "ROLE_ADMIN";
 
   if (isLoading) {
     return (
@@ -76,10 +94,17 @@ const AppRoutes = () => {
           path="/home"
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <Home onLogout={handleLogout} />
+              <Layout onLogout={handleLogout} isAdmin={isAdmin} role={role} />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="equipment" element={<EquipmentPage />} />
+          {/* Klienci — tylko admin. Backend i tak zwróci 403, to dodatkowa warstwa w UI. */}
+          {isAdmin && <Route path="customers" element={<CustomersPage />} />}
+          <Route path="rentals" element={<RentalsPage />} />
+        </Route>
+
         {/* Domyślne przekierowania */}
         <Route
           path="/"

@@ -9,7 +9,6 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
-import "../App.css";
 
 interface LoginProps {
   onLoginSuccess: () => void;
@@ -32,8 +31,13 @@ function Login({ onLoginSuccess }: LoginProps) {
       onLoginSuccess();
       navigate("/home");
     } catch (error: any) {
-      const errorMsg = error.response?.data || error.message || "Invalid username or password.";
-      setErrorMessage(typeof errorMsg === 'string' ? errorMsg : "Invalid credentials.");
+      const errorMsg =
+        error.response?.data ||
+        error.message ||
+        "Invalid username or password.";
+      setErrorMessage(
+        typeof errorMsg === "string" ? errorMsg : "Invalid credentials.",
+      );
       setPassword("");
     } finally {
       setIsLoading(false);
@@ -45,8 +49,8 @@ function Login({ onLoginSuccess }: LoginProps) {
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 p-8 lg:p-10">
         {/* header */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 text-gray-900 border border-gray-100">
-            <ScanFace className="w-8 h-8" />
+          <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mb-4 text-white shadow-lg shadow-black/20">
+            <ScanFace className="w-7 h-7" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
             Welcome Back

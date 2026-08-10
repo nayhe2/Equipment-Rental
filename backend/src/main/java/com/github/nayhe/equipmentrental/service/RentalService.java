@@ -37,13 +37,14 @@ public class RentalService {
         if(!equipment.getIsAvailable()) {
             throw new RuntimeException("This equipment is currently unavailable");
         }
-        equipment.setIsAvailable(true);
+        equipment.setIsAvailable(false);
         equipmentRepository.save(equipment);
 
         Rental rental = new Rental();
         rental.setCustomer(customer);
         rental.setEquipment(equipment);
         rental.setStartDate(LocalDateTime.now());
+        rental.setDueDate(dto.getDueDate()); // może być null — termin jest opcjonalny
 
         return rentalRepository.save(rental);
     }

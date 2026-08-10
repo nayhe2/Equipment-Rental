@@ -18,7 +18,7 @@ public class AppUser {
     @Column(nullable = false)
     private String password;
 
-    // Przechowuje rolę, np. "ROLE_ADMIN" lub "ROLE_STAFF"
+    // przechowuje rolę, np. "ROLE_ADMIN" lub "ROLE_STAFF"
     @Column(nullable = false)
     private String role;
 }

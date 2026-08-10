@@ -7,9 +7,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.List;
 
 @RestController
@@ -31,8 +32,16 @@ public class EquipmentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Equipment addEquipment(@Valid @RequestBody EquipmentCreateDto dto){
         return equipmentService.addEquipment((dto));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteEquipment(@PathVariable Long id){
+        equipmentService.deleteEquipment(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/available")

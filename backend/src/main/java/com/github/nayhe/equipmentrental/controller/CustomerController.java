@@ -5,22 +5,19 @@ import com.github.nayhe.equipmentrental.entity.Customer;
 import com.github.nayhe.equipmentrental.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
+// Dane klientów widoczne są tylko dla administratora
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class CustomerController {
     private final CustomerService customerService;
-
-    // dzieki @RequiredArgsConstructor nie musze tego robic
-//    public CustomerController(CustomerService customerService)
-//    {
-//        this.customerService = customerService;
-//    }
 
     @GetMapping
     public List<Customer> getAllCustomers()

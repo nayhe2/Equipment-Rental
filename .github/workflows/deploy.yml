@@ -1,0 +1,70 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  # github.repository = "owner/repo", np. nayhe/equipment-rental
+  IMAGE_BACKEND: nayhe2/equipment-rental-crm-erp/backend
+  IMAGE_FRONTEND: nayhe2/equipment-rental-crm-erp/frontend
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & push backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_BACKEND }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_BACKEND }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build & push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_FRONTEND }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_FRONTEND }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /opt/rental-app
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f

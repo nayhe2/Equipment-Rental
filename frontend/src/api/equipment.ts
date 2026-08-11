@@ -4,11 +4,12 @@ import type { Equipment, EquipmentCreateDto, PageResponse } from "./types";
 export const getEquipmentPage = async (
   page: number,
   size = 10,
+  search?: string,
 ): Promise<PageResponse<Equipment>> => {
   const response = await axiosInstance.get<PageResponse<Equipment>>(
     "/api/equipment",
     {
-      params: { page, size },
+      params: { page, size, search: search || undefined },
     },
   );
   return response.data;
@@ -26,7 +27,6 @@ export const getEquipmentById = async (id: number): Promise<Equipment> => {
   return response.data;
 };
 
-// Tylko admin (backend odrzuci 403 dla innych ról)
 export const createEquipment = async (
   dto: EquipmentCreateDto,
 ): Promise<Equipment> => {
@@ -34,7 +34,6 @@ export const createEquipment = async (
   return response.data;
 };
 
-// Tylko admin (backend odrzuci 403 dla innych ról)
 export const deleteEquipment = async (id: number): Promise<void> => {
   await axiosInstance.delete(`/api/equipment/${id}`);
 };

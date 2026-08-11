@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="rental")
+@Table(name = "rental")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,14 +19,14 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//  wiele wypożyczeń może należeć do jednego klienta.
-//  wiele wpisów o wypożyczeniu może dotyczyć jednego sprzętu (to będzie historia wypożyczeń).
+    //  wiele wypożyczeń może należeć do jednego klienta.
+    //  wiele wpisów o wypożyczeniu może dotyczyć jednego sprzętu (to będzie historia wypożyczeń).
     @ManyToOne
-    @JoinColumn(name="customer_id", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name="equipment_id", nullable = false)
+    @JoinColumn(name = "equipment_id", nullable = false)
     private Equipment equipment;
 
     @Column

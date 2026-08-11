@@ -10,21 +10,21 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @OpenAPIDefinition(
-		info = @Info(title = "Equipment Rental API", version = "1.0"),
-		security = @SecurityRequirement(name = "bearerAuth")
+        info = @Info(title = "Equipment Rental API", version = "1.0"),
+        security = @SecurityRequirement(name = "bearerAuth")
 )
 @SecurityScheme(
-		name = "bearerAuth",
-		type = SecuritySchemeType.HTTP,
-		scheme = "bearer", // informuje Swaggera, żeby przyklejał słowo "Bearer "
-		bearerFormat = "JWT"
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer", // informuje Swaggera, żeby przyklejał słowo "Bearer "
+        bearerFormat = "JWT"
 )
 @SpringBootApplication
 @EnableScheduling
 public class EquipmentRentalApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EquipmentRentalApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EquipmentRentalApplication.class, args);
+    }
 
 }

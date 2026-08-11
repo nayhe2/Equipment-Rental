@@ -23,18 +23,18 @@ public class RentalService {
     private final CustomerRepository customerRepository;
     private final EquipmentRepository equipmentRepository;
 
-    public List<Rental> getAllRentals(){
+    public List<Rental> getAllRentals() {
         return rentalRepository.findAll();
     }
 
-    public Rental createRental(RentalCreateDto dto){
+    public Rental createRental(RentalCreateDto dto) {
         Customer customer = customerRepository.findById(dto.getCustomerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + dto.getCustomerId()));
 
         Equipment equipment = equipmentRepository.findById(dto.getEquipmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Equipment not found with ID: " + dto.getEquipmentId()));
 
-        if(!equipment.getIsAvailable()) {
+        if (!equipment.getIsAvailable() || equipment.getIsDeleted()) {
             throw new RuntimeException("This equipment is currently unavailable");
         }
         equipment.setIsAvailable(false);
@@ -44,23 +44,23 @@ public class RentalService {
         rental.setCustomer(customer);
         rental.setEquipment(equipment);
         rental.setStartDate(LocalDateTime.now());
-        rental.setDueDate(dto.getDueDate()); // może być null — termin jest opcjonalny
+        rental.setDueDate(dto.getDueDate());
 
         return rentalRepository.save(rental);
     }
 
-    public Rental returnEquipment(Long rentalId){
+    public Rental returnEquipment(Long rentalId) {
         Rental rental = rentalRepository.findById(rentalId)
-                .orElseThrow(()->new ResourceNotFoundException("Rental not found with ID: "+rentalId));
+                .orElseThrow(() -> new ResourceNotFoundException("Rental not found with ID: " + rentalId));
 
-        if(rental.getReturnDate()!=null)
+        if (rental.getReturnDate() != null)
             throw new RuntimeException("This equipment has already been returned");
 
         rental.setReturnDate(LocalDateTime.now());
 
-        long hoursRented = ChronoUnit.HOURS.between(rental.getStartDate(),rental.getReturnDate());
+        long hoursRented = ChronoUnit.HOURS.between(rental.getStartDate(), rental.getReturnDate());
 
-        if(hoursRented == 0)
+        if (hoursRented == 0)
             hoursRented = 1;
 
         Equipment equipment = rental.getEquipment();
@@ -74,22 +74,28 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
-    public List<Rental> getRentalsByCustomer(Long customerId){
-        if(!customerRepository.existsById(customerId))
-            throw new ResourceNotFoundException("Customer not ofund with ID: "+customerId);
+    public List<Rental> getRentalsByCustomer(Long customerId) {
+        if (!customerRepository.existsById(customerId))
+            throw new ResourceNotFoundException("Customer not found with ID: " + customerId);
 
         return rentalRepository.findAllByCustomer_Id(customerId);
     }
 
-    public BigDecimal getTotalEarnings(){
+    public BigDecimal getTotalEarnings() {
         BigDecimal earnings = rentalRepository.calculateTotalEarnings();
 
-        if(earnings == null){
+        if (earnings == null) {
             return BigDecimal.ZERO;
         }
 
         return earnings;
     }
 
-}
+    public List<Object[]> getMonthlyEarnings(int year) {
+        return rentalRepository.calculateMonthlyEarnings(year);
+    }
 
+    public List<Object[]> getYearlyEarnings() {
+        return rentalRepository.calculateYearlyEarnings();
+    }
+}

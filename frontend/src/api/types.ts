@@ -1,5 +1,3 @@
-// Typy odpowiadające encjom i DTO z backendu (Spring Boot)
-
 export interface Equipment {
   id: number;
   name: string;
@@ -34,7 +32,7 @@ export interface Rental {
   customer: Customer;
   equipment: Equipment;
   startDate: string;
-  dueDate: string | null; // opcjonalny planowany termin zwrotu
+  dueDate: string | null;
   returnDate: string | null;
   totalCost: number | null;
 }
@@ -42,24 +40,32 @@ export interface Rental {
 export interface RentalCreateDto {
   customerId: number;
   equipmentId: number;
-  dueDate?: string | null; // opcjonalny, format zgodny z <input type="datetime-local">
+  dueDate?: string | null;
 }
 
-// kształt odpowiedzi Spring Data Page<T>
 export interface PageResponse<T> {
   content: T[];
   totalElements: number;
   totalPages: number;
-  number: number; // aktualna strona (0-indexed)
+  number: number;
   size: number;
   first: boolean;
   last: boolean;
 }
 
-// ujednolicony kształt błędu z GlobalExceptionHandler
 export interface ApiErrorBody {
   timestamp: string;
   status: number;
   error: string;
   message: string | Record<string, string>;
+}
+
+export interface MonthData {
+  month: number;
+  amount: number;
+}
+
+export interface YearData {
+  year: number;
+  amount: number;
 }

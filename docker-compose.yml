@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: rental_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: equipment_rental
+      POSTGRES_USER: rental
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rental -d equipment_rental"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rental_net
+
+  backend:
+    build: ./backend
+    container_name: rental_backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/equipment_rental
+      SPRING_DATASOURCE_USERNAME: rental
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-changeme}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+      JAVA_OPTS: "-Xms256m -Xmx512m -XX:+UseG1GC"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    networks:
+      - rental_net
+
+  frontend:
+    build: ./frontend
+    container_name: rental_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - rental_net
+
+volumes:
+  postgres_data:
+
+networks:
+  rental_net:
+    driver: bridge

@@ -1,6 +1,5 @@
 package com.github.nayhe.equipmentrental.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,4 +27,7 @@ public class Equipment {
     @Column(nullable = false)
     private BigDecimal pricePerHour;
 
+    // sprzęt "usunięty" nie jest kasowany z bazy (żeby nie zgubić historii wypożyczeń),
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
 }

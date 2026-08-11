@@ -54,7 +54,6 @@ export const getStoredAuthToken = async (): Promise<string | null> => {
   return sessionStorage.getItem(TOKEN_KEY);
 };
 
-// Rola aktualnie zalogowanego użytkownika, np. "ROLE_ADMIN". Null, jeśli brak tokenu.
 export const getStoredUserRole = async (): Promise<string | null> => {
   const token = await getStoredAuthToken();
   if (!token) return null;

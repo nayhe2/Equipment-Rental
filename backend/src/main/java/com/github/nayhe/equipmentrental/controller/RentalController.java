@@ -17,25 +17,26 @@ public class RentalController {
     private final RentalService rentalService;
 
     @GetMapping
-    public List<Rental> getAllRentals(){
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public List<Rental> getAllRentals() {
         return rentalService.getAllRentals();
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public Rental addRental(@RequestBody RentalCreateDto dto){
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public Rental addRental(@RequestBody RentalCreateDto dto) {
         return rentalService.createRental(dto);
     }
 
     @PostMapping("/{rentalId}/return")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Rental returnEquipmemt(@PathVariable Long rentalId){
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public Rental returnEquipment(@PathVariable Long rentalId) {
         return rentalService.returnEquipment(rentalId);
     }
 
     @GetMapping("/customer/{customerId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<Rental> getAllRentalsByCustomer(@PathVariable Long customerId){
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public List<Rental> getAllRentalsByCustomer(@PathVariable Long customerId) {
         return rentalService.getRentalsByCustomer(customerId);
     }
 
@@ -43,5 +44,17 @@ public class RentalController {
     @PreAuthorize("hasRole('ADMIN')")
     public BigDecimal getTotalEarnings() {
         return rentalService.getTotalEarnings();
+    }
+
+    @GetMapping("/earnings/monthly/{year}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public List<Object[]> getMonthlyEarnings(@PathVariable int year) {
+        return rentalService.getMonthlyEarnings(year);
+    }
+
+    @GetMapping("/earnings/yearly")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public List<Object[]> getYearlyEarnings() {
+        return rentalService.getYearlyEarnings();
     }
 }

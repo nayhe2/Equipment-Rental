@@ -35,4 +35,7 @@ public class Customer {
 
     @Column(unique = true, nullable = false)
     private String idCardNumber;
+
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
 }

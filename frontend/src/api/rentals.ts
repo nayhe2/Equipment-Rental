@@ -20,7 +20,6 @@ export const createRental = async (dto: RentalCreateDto): Promise<Rental> => {
   return response.data;
 };
 
-// Wymaga poprawki w RentalController na backendzie (patrz uwaga w opisie zmian)
 export const returnRental = async (rentalId: number): Promise<Rental> => {
   const response = await axiosInstance.post<Rental>(
     `/api/rental/${rentalId}/return`,
@@ -28,8 +27,31 @@ export const returnRental = async (rentalId: number): Promise<Rental> => {
   return response.data;
 };
 
-// Dostępne tylko dla ROLE_ADMIN — backend zwróci 403 dla innych ról
 export const getTotalEarnings = async (): Promise<number> => {
   const response = await axiosInstance.get<number>("/api/rental/earnings");
   return response.data;
+};
+
+export const getMonthlyEarnings = async (
+  year: number,
+): Promise<{ month: number; amount: number }[]> => {
+  const response = await axiosInstance.get<[number, number][]>(
+    `/api/rental/earnings/monthly/${year}`,
+  );
+  return response.data.map(([month, amount]) => ({
+    month,
+    amount: Number(amount),
+  }));
+};
+
+export const getYearlyEarnings = async (): Promise<
+  { year: number; amount: number }[]
+> => {
+  const response = await axiosInstance.get<[number, number][]>(
+    "/api/rental/earnings/yearly",
+  );
+  return response.data.map(([year, amount]) => ({
+    year,
+    amount: Number(amount),
+  }));
 };

@@ -5,7 +5,6 @@ import {
   Users,
   ClipboardList,
   LogOut,
-  ScanFace,
 } from "lucide-react";
 
 export interface OutletContextType {
@@ -19,30 +18,27 @@ interface LayoutProps {
 }
 
 function Layout({ onLogout, isAdmin, role }: LayoutProps) {
+  const isEmployee = role === "ROLE_EMPLOYEE";
+
   const navItems = [
-    { to: "/home", label: "Panel", icon: LayoutDashboard, end: true },
-    { to: "/home/equipment", label: "Sprzęt", icon: Package },
-    ...(isAdmin
-      ? [{ to: "/home/customers", label: "Klienci", icon: Users }]
-      : []),
-    { to: "/home/rentals", label: "Wypożyczenia", icon: ClipboardList },
+    { to: "/home", label: "Dashboard", icon: LayoutDashboard, end: true },
+    { to: "/home/equipment", label: "Equipment", icon: Package },
+    { to: "/home/customers", label: "Customers", icon: Users },
+    { to: "/home/rentals", label: "Rentals", icon: ClipboardList },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <aside className="w-64 shrink-0 bg-white border-r border-gray-100 flex flex-col">
         <div className="flex items-center gap-3 px-6 py-6 border-b border-gray-100">
-          <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white shadow-md shadow-black/10 shrink-0">
-            <ScanFace className="w-4 h-4" />
-          </div>
           <div>
             <p className="font-bold text-gray-900 leading-tight">RentalERP</p>
             <span
               className={`inline-block mt-0.5 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${
-                isAdmin ? "bg-black text-white" : "bg-gray-100 text-gray-500"
+                isAdmin ? "bg-black text-white" : "bg-gray-200 text-gray-700"
               }`}
             >
-              {isAdmin ? "Admin" : "Użytkownik"}
+              {isAdmin ? "Admin" : isEmployee ? "Employee" : "User"}
             </span>
           </div>
         </div>
@@ -67,15 +63,6 @@ function Layout({ onLogout, isAdmin, role }: LayoutProps) {
           ))}
         </nav>
 
-        {!isAdmin && (
-          <div className="px-6 pb-3">
-            <p className="text-xs text-gray-400 leading-snug">
-              Twoje konto ma dostęp tylko do podglądu. Zmiany może wprowadzać
-              administrator.
-            </p>
-          </div>
-        )}
-
         <div className="px-3 pb-2">
           <p className="px-3 text-[11px] text-gray-300 truncate">
             {role ? role.replace("ROLE_", "") : ""}
@@ -88,7 +75,7 @@ function Layout({ onLogout, isAdmin, role }: LayoutProps) {
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            Wyloguj się
+            Log out
           </button>
         </div>
       </aside>

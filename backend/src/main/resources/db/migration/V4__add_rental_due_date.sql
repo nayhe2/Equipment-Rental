@@ -1,1 +1,0 @@
-ALTER TABLE rental ADD COLUMN due_date TIMESTAMP;

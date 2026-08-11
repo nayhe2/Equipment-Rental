@@ -17,3 +17,7 @@ export const createCustomer = async (
   const response = await axiosInstance.post<Customer>("/api/customers", dto);
   return response.data;
 };
+
+export const deleteCustomer = async (id: number): Promise<void> => {
+  await axiosInstance.delete(`/api/customers/${id}`);
+};

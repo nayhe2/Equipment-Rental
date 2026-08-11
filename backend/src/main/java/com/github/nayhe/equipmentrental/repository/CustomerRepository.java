@@ -1,20 +1,11 @@
 package com.github.nayhe.equipmentrental.repository;
 
 import com.github.nayhe.equipmentrental.entity.Customer;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.FluentQuery;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
-//Pierwszy parametr mówi Springowi, jaką encją zarządzamy (Customer),
-//a drugi mówi, jakiego typu jest jej Klucz Główny, czyli ID (Long).
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
+    List<Customer> findAllByIsDeletedFalse();
 }

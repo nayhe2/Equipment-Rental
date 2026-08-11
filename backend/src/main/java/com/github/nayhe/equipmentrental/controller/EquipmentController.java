@@ -21,31 +21,30 @@ public class EquipmentController {
     final EquipmentService equipmentService;
 
     @GetMapping
-    public Page<Equipment> getAllEquipment(Pageable pageable){
-        return equipmentService.getAllEquipment(pageable);
+    public Page<Equipment> getAllEquipment(Pageable pageable, @RequestParam(required = false) String search) {
+        return equipmentService.getAllEquipment(pageable, search);
     }
 
     @GetMapping("/{id}")
-    public Equipment getEquipmentById(@PathVariable Long id) // @PathVariable zeby Spring nie szukal id w ciele zapytania tylko URL
-    {
+    public Equipment getEquipmentById(@PathVariable Long id) {
         return equipmentService.getEquipmentById(id);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public Equipment addEquipment(@Valid @RequestBody EquipmentCreateDto dto){
-        return equipmentService.addEquipment((dto));
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public Equipment addEquipment(@Valid @RequestBody EquipmentCreateDto dto) {
+        return equipmentService.addEquipment(dto);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteEquipment(@PathVariable Long id){
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity<Void> deleteEquipment(@PathVariable Long id) {
         equipmentService.deleteEquipment(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/available")
-    public List<Equipment> getAvailableEquipment(){
+    public List<Equipment> getAvailableEquipment() {
         return equipmentService.getAvailableEquipment();
     }
 }

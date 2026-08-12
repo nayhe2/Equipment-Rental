@@ -1,15 +1,11 @@
 # --- Etap 1: build ---
-FROM node:20-alpine AS build
+FROM node:20-slim AS build
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci
 
 COPY . .
-# Na produkcji VITE_API_BASE_URL NIE jest ustawiane (patrz axiosInstance.ts) —
-# requesty idą pod ten sam adres co strona (np. "/api/..."), a nginx poniżej
-# przekierowuje /api do kontenera backendu. Dzięki temu nie trzeba wpisywać
-# adresu backendu na sztywno ani konfigurować CORS.
 RUN npm run build
 
 # --- Etap 2: runtime ---

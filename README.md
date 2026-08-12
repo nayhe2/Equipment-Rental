@@ -6,6 +6,29 @@ Full-stack: **React + TypeScript** (frontend) i **Spring Boot** (backend REST AP
 
 ---
 
+## Wersja demonstracyjna jest dostępna publicznie
+
+#### Aplikacja działa na własnym VPS w Oracle Cloud (OCI) - deploy automatyczny (GitHub Actions CI/CD)
+
+- **Frontend aplikacji:**  
+  [http://equipmentrentalfrontend.duckdns.org](http://equipmentrentalfrontend.duckdns.org)
+
+- **Dokumentacja API (Swagger UI):**  
+  [http://equipmentrentalbackend.duckdns.org/swagger-ui/index.html](http://equipmentrentalbackend.duckdns.org/swagger-ui/index.html)
+
+---
+
+**Dane logowania**
+
+| Rola              | Login       | Hasło          |
+| ----------------- | ----------- | -------------- |
+| **Administrator** | `admin`     | `admin123`     |
+| **Pracownik**     | `pracownik` | `pracownik123` |
+
+> Baza danych jest resetowana co **30 minut** (o pełnych i półpełnych godzinach) - aplikacja wraca do stanu początkowego.
+
+---
+
 ## Stack technologiczny
 
 | Warstwa          | Technologie                                                                            |

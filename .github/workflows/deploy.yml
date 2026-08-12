@@ -6,7 +6,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # github.repository = "owner/repo", np. nayhe/equipment-rental
   IMAGE_BACKEND: nayhe2/equipment-rental-crm-erp/backend
   IMAGE_FRONTEND: nayhe2/equipment-rental-crm-erp/frontend
 
@@ -64,7 +63,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /opt/rental-app
-            docker compose pull
-            docker compose up -d --remove-orphans
+            cd ~/opt/Equipment-Rental-CRM-ERP
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
             docker image prune -f

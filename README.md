@@ -32,38 +32,41 @@ Full-stack: **React + TypeScript** (frontend) i **Spring Boot** (backend REST AP
 ## Zrzuty ekranu
 
 <div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <img src="gallery/login.png" alt="Ekran logowania"><br>
-        <em>Ekran logowania</em>
-      </td>
-      <td align="center">
-        <img src="gallery/register.png" alt="Ekran rejestracji"><br>
-        <em>Ekran rejestracji</em>
-      </td>
-    </tr>
-    <tr>
-    <td align="center">
-        <img src="gallery/dashboard.png" alt="Dashboard administratora"><br>
-        <em>Dashboard administratora</em>
-      </td>
-      <td align="center">
-        <img src="gallery/equipment.png" alt="Lista sprzętu"><br>
-        <em>Lista sprzętu do wypożyczenia</em>
-      </td>
-    </tr>
-    <tr>
-    <td align="center">
-        <img src="gallery/customers.png" alt="Lista klientów"><br>
-        <em>Lista klientów</em>
-      </td>
-      <td align="center" colspan="2">
-        <img src="gallery/rentals.png" alt="Lista wypożyczeń"><br>
-        <em>Lista wypożyczeń z aktywnym, naliczającym się kosztem</em>
-      </td>
-    </tr>
-  </table>
+
+  <img src="gallery/login.png" alt="Ekran logowania">
+  <br>
+  <em>Ekran logowania</em>
+  
+  <br><br><br><br>
+
+  <img src="gallery/register.png" alt="Ekran rejestracji">
+  <br>
+  <em>Ekran rejestracji</em>
+  
+  <br><br><br><br>
+
+  <img src="gallery/dashboard.png" alt="Dashboard administratora">
+  <br>
+  <em>Dashboard administratora</em>
+  
+  <br><br><br><br>
+
+  <img src="gallery/equipment.png" alt="Lista sprzętu">
+  <br>
+  <em>Lista sprzętu do wypożyczenia</em>
+  
+  <br><br><br><br>
+
+  <img src="gallery/customers.png" alt="Lista klientów">
+  <br>
+  <em>Lista klientów</em>
+  
+  <br><br><br><br>
+
+  <img src="gallery/rentals.png" alt="Lista wypożyczeń">
+  <br>
+  <em>Lista wypożyczeń z aktywnym, naliczającym się kosztem</em>
+
 </div>
 
 ---

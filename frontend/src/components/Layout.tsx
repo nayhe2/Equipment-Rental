@@ -32,7 +32,7 @@ function Layout({ onLogout, isAdmin, role }: LayoutProps) {
       <aside className="w-64 shrink-0 bg-white border-r border-gray-100 flex flex-col">
         <div className="flex items-center gap-3 px-6 py-6 border-b border-gray-100">
           <div>
-            <p className="font-bold text-gray-900 leading-tight">RentalERP</p>
+            <p className="font-bold text-gray-900 leading-tight">Rental</p>
             <span
               className={`inline-block mt-0.5 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${
                 isAdmin ? "bg-black text-white" : "bg-gray-200 text-gray-700"

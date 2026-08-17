@@ -1,4 +1,4 @@
-# Equipment Rental CRM/ERP
+# Equipment Rental
 
 Aplikacja do zarządzania wypożyczalnią sprzętu - ewidencja sprzętu, klientów i wypożyczeń, z rozliczaniem kosztów w czasie rzeczywistym i panelem statystyk dla administratora.
 
